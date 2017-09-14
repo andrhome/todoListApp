@@ -43,6 +43,33 @@ function bindEvents(todoItem) {
     deleteButton.addEventListener('click', deleteTodoItem);
 }
 
+function toggleTodoItem() {
+    const listItem = this.parentNode;
+    listItem.classList.toggle('completed');
+}
+
+function editTodoItem() {
+    const listItem = this.parentNode;
+    const title = listItem.querySelector('.title');
+    const editInput = listItem.querySelector('.textfield');
+    const isEditing = listItem.classList.contains('editing');
+
+    if(isEditing) {
+        title.innerText = editInput.value;
+        this.innerText = 'Edit';
+    } else{
+        editInput.value = title.innerText;
+        this.innerText = 'Save';
+    }
+
+    listItem.classList.toggle('editing');
+}
+
+function deleteTodoItem() {
+    const listItem = this.parentNode;
+    todoList.removeChild(listItem);
+}
+
 function addTodoItem(event) {
     event.preventDefault();
 
@@ -59,5 +86,11 @@ const addInput = document.getElementById('add-input');
 const todoList = document.getElementById('todo-list');
 const todoItems = document.querySelectorAll('.todo-item');
 
+function init() {
+    todoForm.addEventListener('submit', addTodoItem);
+    todoItems.forEach(function (item) {
+        bindEvents(item);
+    });
+}
 
-todoForm.addEventListener('submit', addTodoItem);
+init();
